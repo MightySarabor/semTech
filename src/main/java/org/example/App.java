@@ -4,7 +4,7 @@ import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.VCARD;
 
 /**
- * Hello world!
+ * Hello world! Test
  *
  */
 public class App 
