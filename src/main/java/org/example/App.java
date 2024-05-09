@@ -6,7 +6,7 @@ import org.apache.jena.vocabulary.VCARD;
 public class App
 {
     // Korrekte URIs ohne ungültige Zeichen
-    static String personURI = "http://example.org/person/1234";
+    static String personURI = "http://www.uni-trier.de/index.php?id=1890";
     static String givenName = "Ralph";
     static String familyName = "Bergmann";
     static String email = "mailto:bergmann@uni-trier.de";
@@ -14,19 +14,25 @@ public class App
 
     public static void main(String[] args) {
         // Namensraum für benutzerdefinierte Property
-        String myNamespace = "http://example.org/myOntology#";
+        String myNamespace = "http://semTec.org/ex1#";
 
         // create an empty Model
         Model model = ModelFactory.createDefaultModel();
 
         // custom Property erstellen
-        Property creatorOf = model.createProperty(myNamespace, "creatorOf");
+        Property creatorOf = model.createProperty(myNamespace, "createdBy");
 
         // Resource erstellen und Property hinzufügen
-        Resource person = model.createResource(personURI)
+     /*   Resource person = model.createResource(personURI)
                 .addProperty(creatorOf, fullName)
                 .addProperty(VCARD.FN, fullName)
-                .addProperty(VCARD.EMAIL, email);
+                .addProperty(VCARD.EMAIL, email);*/
+        Resource person = model.createResource(personURI)
+                .addProperty(creatorOf,
+                        model.createResource()
+                                .addProperty(VCARD.FN, fullName)
+                                .addProperty(VCARD.EMAIL, email));
+
 
         // Statements im Modell auflisten
         StmtIterator iter = model.listStatements();
