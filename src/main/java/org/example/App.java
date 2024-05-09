@@ -3,6 +3,8 @@ package org.example;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.VCARD;
 
+import static org.apache.jena.vocabulary.SchemaDO.model;
+
 /**
  * Hello world! Test
  *
@@ -10,16 +12,17 @@ import org.apache.jena.vocabulary.VCARD;
 public class App 
 {
 
-    static String personURI    = "http://somewhere/JohnSmith";
-    static String fullName     = "John Smith";
+    static String personURI    = "http://www.uni-trier.de/index.php?id=1890";
+    static String fullName     = "Ralph Bergmann";
 
     public static void main( String[] args ) {
         System.out.println("Hello World!");
 
         // some definitions
-        String personURI = "http://somewhere/JohnSmith";
-        String givenName = "John";
-        String familyName = "Smith";
+        String personURI = "http://www.uni-trier.de/index.php?id=1890";
+        String givenName= "Ralph Bergmann";
+        String familyName = "mailto:bergmann@uni-trier.de";
+        Property nickProperty = model.getModel().createProperty(givenName, "Creator");
         String fullName = givenName + " " + familyName;
 
         // create an empty Model
@@ -29,10 +32,10 @@ public class App
 //   and add the properties cascading style
         Resource johnSmith
                 = model.createResource(personURI)
-                .addProperty(VCARD.FN, fullName)
+                .addLiteral(nickProperty, VCARD.N)
                 .addProperty(VCARD.N,
                         model.createResource()
-                                .addProperty(VCARD.Given, givenName)
+                                .addProperty(VCARD.Given, fullName)
                                 .addProperty(VCARD.Family, familyName));
 
 
