@@ -3,63 +3,52 @@ package org.example;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.VCARD;
 
-import static org.apache.jena.vocabulary.SchemaDO.model;
-
-/**
- * Hello world! Test
- *
- */
-public class App 
+public class App
 {
+    // Korrekte URIs ohne ungültige Zeichen
+    static String personURI = "http://example.org/person/1234";
+    static String givenName = "Ralph";
+    static String familyName = "Bergmann";
+    static String email = "mailto:bergmann@uni-trier.de";
+    static String fullName = givenName + " " + familyName;
 
-    static String personURI    = "http://www.uni-trier.de/index.php?id=1890";
-    static String fullName     = "Ralph Bergmann";
-
-    public static void main( String[] args ) {
-        System.out.println("Hello World!");
-
-        // some definitions
-        String personURI = "http://www.uni-trier.de/index.php?id=1890";
-        String givenName= "Ralph Bergmann";
-        String familyName = "mailto:bergmann@uni-trier.de";
-        Property nickProperty = model.getModel().createProperty(givenName, "Creator");
-        String fullName = givenName + " " + familyName;
+    public static void main(String[] args) {
+        // Namensraum für benutzerdefinierte Property
+        String myNamespace = "http://example.org/myOntology#";
 
         // create an empty Model
         Model model = ModelFactory.createDefaultModel();
 
-        // create the resource
-//   and add the properties cascading style
-        Resource johnSmith
-                = model.createResource(personURI)
-                .addLiteral(nickProperty, VCARD.N)
-                .addProperty(VCARD.N,
-                        model.createResource()
-                                .addProperty(VCARD.Given, fullName)
-                                .addProperty(VCARD.Family, familyName));
+        // custom Property erstellen
+        Property creatorOf = model.createProperty(myNamespace, "creatorOf");
 
+        // Resource erstellen und Property hinzufügen
+        Resource person = model.createResource(personURI)
+                .addProperty(creatorOf, fullName)
+                .addProperty(VCARD.FN, fullName)
+                .addProperty(VCARD.EMAIL, email);
 
-        // list the statements in the Model
+        // Statements im Modell auflisten
         StmtIterator iter = model.listStatements();
 
-// print out the predicate, subject and object of each statement
+        // Ausgabe der Statements
         while (iter.hasNext()) {
-            Statement stmt = iter.nextStatement();  // get next statement
-            Resource subject = stmt.getSubject();     // get the subject
-            Property predicate = stmt.getPredicate();   // get the predicate
-            RDFNode object = stmt.getObject();      // get the object
+            Statement stmt = iter.nextStatement();
+            Resource subject = stmt.getSubject();
+            Property predicate = stmt.getPredicate();
+            RDFNode object = stmt.getObject();
 
             System.out.print(subject.toString());
             System.out.print(" " + predicate.toString() + " ");
             if (object instanceof Resource) {
                 System.out.print(object.toString());
             } else {
-                // object is a literal
-                System.out.print(" \"" + object.toString() + "\"");
+                System.out.print("\"" + object.toString() + "\"");
             }
-
             System.out.println(" .");
         }
-        model.write(System.out);
 
-    }}
+        // RDF-Modell in Turtle-Format ausgeben
+        model.write(System.out);
+    }
+}
