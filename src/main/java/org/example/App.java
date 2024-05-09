@@ -5,33 +5,47 @@ import org.apache.jena.vocabulary.VCARD;
 
 public class App
 {
+    // Namensraum für benutzerdefinierte Property
+    static String myNamespace = "http://semTec.org/ex1#";
+
     // Korrekte URIs ohne ungültige Zeichen
-    static String personURI = "http://www.uni-trier.de/index.php?id=1890";
+    static String uniPage = "http://www.uni-trier.de/index.php?id=1890";
+    static String lecture = myNamespace + "semantic_Technologies";
+    static String exercise = myNamespace + "exercise";
     static String givenName = "Ralph";
     static String familyName = "Bergmann";
     static String email = "mailto:bergmann@uni-trier.de";
     static String fullName = givenName + " " + familyName;
 
+
     public static void main(String[] args) {
-        // Namensraum für benutzerdefinierte Property
-        String myNamespace = "http://semTec.org/ex1#";
 
         // create an empty Model
         Model model = ModelFactory.createDefaultModel();
 
-        // custom Property erstellen
-        Property creatorOf = model.createProperty(myNamespace, "createdBy");
+        // custom Properties erstellen
+        Property createdBy = model.createProperty(myNamespace, "createdBy");
+        Property gives = model.createProperty(myNamespace, "gives");
+        Property has = model.createProperty(myNamespace, "has");
+
+
 
         // Resource erstellen und Property hinzufügen
-     /*   Resource person = model.createResource(personURI)
-                .addProperty(creatorOf, fullName)
-                .addProperty(VCARD.FN, fullName)
-                .addProperty(VCARD.EMAIL, email);*/
-        Resource person = model.createResource(personURI)
-                .addProperty(creatorOf,
+
+        model.createResource(uniPage)
+                .addProperty(createdBy,
                         model.createResource()
                                 .addProperty(VCARD.FN, fullName)
                                 .addProperty(VCARD.EMAIL, email));
+
+        model.createResource(lecture)
+                .addProperty(gives, fullName)
+                .addProperty(has, model.createResource(exercise)
+                        .addProperty(has, "Assignment_1")
+                        .addProperty(has, "Assignment_2")
+                        .addProperty(has, "Assignment_3")
+                        .addProperty(gives, "Maximilian Hoffmann"));
+
 
 
         // Statements im Modell auflisten
