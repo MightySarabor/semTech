@@ -20,6 +20,7 @@ public class App
     static final String startOps_London = "1946";
     static final String startOps_NewYork = "1948";
 
+    private static Model model = ModelFactory.createDefaultModel();
 
 
 
@@ -33,7 +34,6 @@ public class App
     public static void main(String[] args) {
 
         // create an empty Model
-        Model model = ModelFactory.createDefaultModel();
 
         // Literals
         String numEmpl = "number_of_employees";
@@ -89,6 +89,18 @@ public class App
         customerRes.addProperty(booksTrip, airLineRes);
         customerRes.addProperty(travelInfo, blankCustomerRes);
 
+        //Trips
+        //Flug flug = new Flug("Flug_1", "C32", "business", "Rome", "Berlin", "03.06.2024 12:20", "03.06.2024 15:30");
+        Resource trip_1 = Trip.setTrip("Trip_1", Flug.createFlight("Flug_1", "C32", "business", "Rome", "Berlin", "03.06.2024 12:20", "03.06.2024 15:30"));
+        trip_1 = Trip.setTrip("Trip_1",Flug.createFlight("Flug_2", "E32", "Economy", "Rome", "Berlin", "08.06.2024 12:20", "09.06.2024 15:30"));
+
+        Resource trip_2 = Trip.setTrip("Trip_2", Flug.createFlight("T2F1", "C32", "business", "Rome", "Berlin", "03.06.2024 12:20", "03.06.2024 15:30"));
+        trip_2 = Trip.setTrip("Trip_2",Flug.createFlight("T2F2", "E32", "Economy", "Rome", "Berlin", "08.06.2024 12:20", "09.06.2024 15:30"));
+
+        blankCustomerRes
+                .addProperty(travelInfo, trip_1)
+                .addProperty(travelInfo, trip_2);
+
        /* model.createResource(uniPage)
                 .addProperty(createdBy,
                         model.createResource()
@@ -128,5 +140,9 @@ public class App
 
         // RDF-Modell in Turtle-Format ausgeben
         model.write(System.out);
+    }
+
+    public static Model getModel() {
+        return model;
     }
 }
