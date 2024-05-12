@@ -1,22 +1,34 @@
 package org.example;
 
 import org.apache.jena.rdf.model.*;
-import org.apache.jena.vocabulary.VCARD;
+import org.apache.jena.vocabulary.RDF;
 
 public class App
 {
     //E2
     // Namensraum für benutzerdefinierte Property
-    static String myNamespace = "http://semTec.org/ex1#";
+    static String myNamespace = "http://semTec.org/E2#";
+
+    static String airLine = myNamespace + "semantisch_Fliegen";
+    static String airPort_Rome = myNamespace + "FCO";
+    static String airPort_Berlin = myNamespace + "BER";
+    static String airPort_London = myNamespace + "LHR";
+    static String airPort_NewYork = myNamespace + "JFK";
+
+    static final String startOps_Rome = "1960";
+    static final String startOps_Berlin = "2020";
+    static final String startOps_London = "1946";
+    static final String startOps_NewYork = "1948";
+
+    static Property operates;
+    static Property name;
+
 
     // Korrekte URIs ohne ungültige Zeichen
-    static String uniPage = "http://www.uni-trier.de/index.php?id=1890";
-    static String lecture = myNamespace + "semantic_Technologies";
-    static String exercise = myNamespace + "exercise";
-    static String givenName = "Ralph";
-    static String familyName = "Bergmann";
-    static String email = "mailto:bergmann@uni-trier.de";
-    static String fullName = givenName + " " + familyName;
+
+
+
+
 
 
     public static void main(String[] args) {
@@ -25,15 +37,21 @@ public class App
         Model model = ModelFactory.createDefaultModel();
 
         // custom Properties erstellen
-        Property createdBy = model.createProperty(myNamespace, "createdBy");
-        Property gives = model.createProperty(myNamespace, "gives");
-        Property has = model.createProperty(myNamespace, "has");
-
-
 
         // Resource erstellen und Property hinzufügen
+        operates = model.createProperty(myNamespace, "operates");
+        name = model.createProperty(myNamespace, "name");
 
-        model.createResource(uniPage)
+        model.createResource(airLine)
+                .addProperty(operates, model.createResource()
+                    .addProperty(name,  airPort_Rome)
+                    .addProperty(name, airPort_Berlin)
+                    .addProperty(name, airPort_NewYork)
+                    .addProperty(name, airPort_London));
+
+
+
+       /* model.createResource(uniPage)
                 .addProperty(createdBy,
                         model.createResource()
                                 .addProperty(VCARD.FN, fullName)
@@ -48,7 +66,7 @@ public class App
                         .addProperty(gives, "Maximilian Hoffmann"));
 
 
-
+        */
         // Statements im Modell auflisten
         StmtIterator iter = model.listStatements();
 
