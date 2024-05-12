@@ -90,16 +90,31 @@ public class App
         customerRes.addProperty(travelInfo, blankCustomerRes);
 
         //Trips
-        //Flug flug = new Flug("Flug_1", "C32", "business", "Rome", "Berlin", "03.06.2024 12:20", "03.06.2024 15:30");
-        Resource trip_1 = Trip.setTrip("Trip_1", Flug.createFlight("Flug_1", "C32", "business", "Rome", "Berlin", "03.06.2024 12:20", "03.06.2024 15:30"));
-        trip_1 = Trip.setTrip("Trip_1",Flug.createFlight("Flug_2", "E32", "Economy", "Rome", "Berlin", "08.06.2024 12:20", "09.06.2024 15:30"));
+        Resource trip_1;
+        Resource trip_2;
+        Resource trip_3;
 
-        Resource trip_2 = Trip.setTrip("Trip_2", Flug.createFlight("T2F1", "C32", "business", "Rome", "Berlin", "03.06.2024 12:20", "03.06.2024 15:30"));
-        trip_2 = Trip.setTrip("Trip_2",Flug.createFlight("T2F2", "E32", "Economy", "Rome", "Berlin", "08.06.2024 12:20", "09.06.2024 15:30"));
+        trip_1 = Trip.setTrip("Trip_1",Flug.createFlight("T1F1", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+        trip_1 = Trip.setTrip("Trip_1",Flug.createFlight("T1F2", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+        trip_1 = Trip.setTrip("Trip_1",Flug.createFlight("T1F3", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+        trip_1 = Trip.setTrip("Trip_1",Flug.createFlight("T1F4", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+
+        trip_2 = Trip.setTrip("Trip_2",Flug.createFlight("T2F1", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+        trip_2 = Trip.setTrip("Trip_2",Flug.createFlight("T2F2", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+        trip_2 = Trip.setTrip("Trip_2",Flug.createFlight("T2F3", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+        trip_2 = Trip.setTrip("Trip_2",Flug.createFlight("T2F4", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+
+        trip_3 = Trip.setTrip("Trip_3",Flug.createFlight("T3F1", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+        trip_3 = Trip.setTrip("Trip_3",Flug.createFlight("T3F2", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+        trip_3 = Trip.setTrip("Trip_3",Flug.createFlight("T3F3", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+        trip_3 = Trip.setTrip("Trip_3",Flug.createFlight("T3F4", "E32", "Economy", "Rome", "Berlin", "08.06.2024" , "12:20", "09.06.2024", "15:30"));
+
+
 
         blankCustomerRes
                 .addProperty(travelInfo, trip_1)
-                .addProperty(travelInfo, trip_2);
+                .addProperty(travelInfo, trip_2)
+                .addProperty(travelInfo, trip_3);
 
        /* model.createResource(uniPage)
                 .addProperty(createdBy,
