@@ -20,8 +20,7 @@ public class App
     static final String startOps_London = "1946";
     static final String startOps_NewYork = "1948";
 
-    static Property operates;
-    static Property name;
+
 
 
     // Korrekte URIs ohne ungültige Zeichen
@@ -36,20 +35,59 @@ public class App
         // create an empty Model
         Model model = ModelFactory.createDefaultModel();
 
-        // custom Properties erstellen
+        // Literals
+        String numEmpl = "number_of_employees";
+        String manInCharge = "manager_in_charge";
 
-        // Resource erstellen und Property hinzufügen
-        operates = model.createProperty(myNamespace, "operates");
-        name = model.createProperty(myNamespace, "name");
+        // Properties
+        Property operates = model.createProperty(myNamespace, "operates");
+        Property name = model.createProperty(myNamespace, "name");
+        Property startOps = model.createProperty(myNamespace, "startOps");
+        Property has = model.createProperty(myNamespace, "has");
+        Property booksTrip = model.createProperty(myNamespace, "booksTrip");
+        Property travelInfo = model.createProperty(myNamespace, "travelInfo");
 
-        model.createResource(airLine)
+        //Ressourcen
+        Resource airLineRes = model.createResource(airLine);
+        Resource blankAirportRes = model.createResource();
+        Resource romeAirportRes = model.createResource(airPort_Rome);
+        Resource berlinAirportRes = model.createResource(airPort_Berlin);
+        Resource londonAirportRes = model.createResource(airPort_London);
+        Resource newYorkAirportRes = model.createResource(airPort_NewYork);
+        Resource customerRes = model.createResource(myNamespace + "customer");
+        Resource blankCustomerRes = model.createResource();
+
+
+        /*airLineModel.createResource(airLine)
                 .addProperty(operates, model.createResource()
-                    .addProperty(name,  airPort_Rome)
+                    .addProperty(name, airPort_Rome)
                     .addProperty(name, airPort_Berlin)
                     .addProperty(name, airPort_NewYork)
                     .addProperty(name, airPort_London));
+        */
+        //Rom Flughafen
+        airLineRes.addProperty(operates, blankAirportRes.addProperty(name,
+                romeAirportRes.addProperty(startOps, startOps_Rome)));
 
+        //Berlin Flughafen
+        airLineRes.addProperty(operates, blankAirportRes.addProperty(name,
+                berlinAirportRes.addProperty(startOps, startOps_Berlin)));
 
+        //London Flughafen
+        airLineRes.addProperty(operates, blankAirportRes.addProperty(name,
+                londonAirportRes.addProperty(startOps, startOps_London)));
+
+        //NewYork Flughafen
+        airLineRes.addProperty(operates, blankAirportRes.addProperty(name,
+                newYorkAirportRes.addProperty(startOps, startOps_NewYork)));
+
+        //Mitarbeiter
+        airLineRes.addProperty(has,numEmpl);
+        airLineRes.addProperty(has,manInCharge);
+
+        //Customer
+        customerRes.addProperty(booksTrip, airLineRes);
+        customerRes.addProperty(travelInfo, blankCustomerRes);
 
        /* model.createResource(uniPage)
                 .addProperty(createdBy,
@@ -69,6 +107,7 @@ public class App
         */
         // Statements im Modell auflisten
         StmtIterator iter = model.listStatements();
+
 
         // Ausgabe der Statements
         while (iter.hasNext()) {
