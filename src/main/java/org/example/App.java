@@ -5,6 +5,7 @@ import org.apache.jena.vocabulary.VCARD;
 
 public class App
 {
+    //E1
     // Namensraum für benutzerdefinierte Property
     static String myNamespace = "http://semTec.org/ex1#";
 
