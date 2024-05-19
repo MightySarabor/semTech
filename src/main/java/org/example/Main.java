@@ -1,13 +1,14 @@
 package org.example;
 
 import org.apache.jena.rdf.model.*;
-import org.apache.jena.vocabulary.RDF;
 
-public class App
+public class Main
 {
     //E2
     // Namensraum für benutzerdefinierte Property
-    static String myNamespace = "http://semTec.org/E2#";
+
+    private static Model model = ModelFactory.createDefaultModel();
+    private static String myNamespace = "http://semTec.org/E2#";
 
     static String airLine = myNamespace + "semantisch_Fliegen";
     static String airPort_Rome = myNamespace + "FCO";
@@ -20,7 +21,9 @@ public class App
     static final String startOps_London = "1946";
     static final String startOps_NewYork = "1948";
 
-    private static Model model = ModelFactory.createDefaultModel();
+
+
+
 
 
 
@@ -33,7 +36,7 @@ public class App
 
     public static void main(String[] args) {
 
-        // create an empty Model
+       /* // create an empty Model
 
         // Literals
         String numEmpl = "number_of_employees";
@@ -58,13 +61,13 @@ public class App
         Resource blankCustomerRes = model.createResource();
 
 
-        /*airLineModel.createResource(airLine)
+        airLineModel.createResource(airLine)
                 .addProperty(operates, model.createResource()
                     .addProperty(name, airPort_Rome)
                     .addProperty(name, airPort_Berlin)
                     .addProperty(name, airPort_NewYork)
                     .addProperty(name, airPort_London));
-        */
+
         //Rom Flughafen
         airLineRes.addProperty(operates, blankAirportRes.addProperty(name,
                 romeAirportRes.addProperty(startOps, startOps_Rome)));
@@ -116,7 +119,7 @@ public class App
                 .addProperty(travelInfo, trip_2)
                 .addProperty(travelInfo, trip_3);
 
-       /* model.createResource(uniPage)
+        model.createResource(uniPage)
                 .addProperty(createdBy,
                         model.createResource()
                                 .addProperty(VCARD.FN, fullName)
@@ -133,6 +136,14 @@ public class App
 
         */
         // Statements im Modell auflisten
+
+
+        Airport berlin = new Airport("Berlin","BER", "2fafsdfs", 200, "Jürgen Schmitz");
+        berlin.init();
+        Customer customer_1 = new Customer("Hans", "Peter", "fjalkfjalkajfa");
+        customer_1.init();
+
+
         StmtIterator iter = model.listStatements();
 
 
@@ -159,5 +170,9 @@ public class App
 
     public static Model getModel() {
         return model;
+    }
+
+    public static String getMyNamespace() {
+        return myNamespace;
     }
 }

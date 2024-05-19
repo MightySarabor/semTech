@@ -1,7 +1,6 @@
 package org.example;
 
 import org.apache.jena.rdf.model.*;
-import static org.example.App.myNamespace;
 
 public class Trip {
 
@@ -13,7 +12,7 @@ public class Trip {
         flug = flug;
     }
 
-    public static Resource setTrip(String trip, Flug flug)
+    /*public static Resource setTrip(String trip, Flug flug)
     {
 
         //create Literal
@@ -28,33 +27,33 @@ public class Trip {
 
 
         //create properties
-        Property seatProp = App.getModel().createProperty(myNamespace, "has_Seat");
-        Property flightClassProp = App.getModel().createProperty(myNamespace, "has_FlightClass");
-        Property startPointProp = App.getModel().createProperty(myNamespace, "has_StartPoint");
-        Property connection = App.getModel().createProperty(myNamespace, "connection");
-        Property destinationPointProp = App.getModel().createProperty(myNamespace, "has_DestinationPoint");
-        Property startTimeProp = App.getModel().createProperty(myNamespace, "has_Start_Time");
-        Property destinationTimeProp = App.getModel().createProperty(myNamespace, "has_Destination_Time");
-        Property flightTimeProp = App.getModel().createProperty(myNamespace, "Flight_Time");
-        Property has = App.getModel().createProperty(myNamespace, "has");
+        /*Property seatProp = Main.getModel().createProperty(myNamespace, "has_Seat");
+        Property flightClassProp = Main.getModel().createProperty(myNamespace, "has_FlightClass");
+        Property startPointProp = Main.getModel().createProperty(myNamespace, "has_StartPoint");
+        Property connection = Main.getModel().createProperty(myNamespace, "connection");
+        Property destinationPointProp = Main.getModel().createProperty(myNamespace, "has_DestinationPoint");
+        Property startTimeProp = Main.getModel().createProperty(myNamespace, "has_Start_Time");
+        Property destinationTimeProp = Main.getModel().createProperty(myNamespace, "has_Destination_Time");
+        Property flightTimeProp = Main.getModel().createProperty(myNamespace, "Flight_Time");
+        Property has = Main.getModel().createProperty(myNamespace, "has");
 
 
         //create Resources
-        Resource flightRes = App.getModel().createResource(myNamespace + flug.getName());
-        Resource tripRes = App.getModel().createResource(myNamespace + trip);
+        Resource flightRes = Main.getModel().createResource(myNamespace + flug.getName());
+        Resource tripRes = Main.getModel().createResource(myNamespace + trip);
 
         flightRes
                 .addProperty(seatProp, seat)
                 .addProperty(flightClassProp, flightClass)
-                .addProperty(connection, App.getModel().createResource()
+                .addProperty(connection, Main.getModel().createResource()
                         .addProperty(startPointProp, startPoint)
                         .addProperty(destinationPointProp, destinationPoint) )
 
-                .addProperty(flightTimeProp, App.getModel().createResource()
-                        .addProperty(startTimeProp, App.getModel().createResource()
+                .addProperty(flightTimeProp, Main.getModel().createResource()
+                        .addProperty(startTimeProp, Main.getModel().createResource()
                                 .addProperty(startTimeProp, startTime)
                                 .addProperty(startTimeProp, startDate))
-                        .addProperty(destinationTimeProp, App.getModel().createResource()
+                        .addProperty(destinationTimeProp, Main.getModel().createResource()
                                 .addProperty(destinationTimeProp, endDate)
                                 .addProperty(destinationTimeProp, destinationTime)));
 
@@ -64,6 +63,6 @@ public class Trip {
 
         return tripRes;
 
-    }
+    }*/
 
 }
