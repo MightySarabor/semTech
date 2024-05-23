@@ -3,51 +3,48 @@ package org.example;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.VCARD;
 
-public class App
-{
-    //E1
-    // Namensraum für benutzerdefinierte Property
-    static String myNamespace = "http://semTec.org/ex1#";
-
-    // Korrekte URIs ohne ungültige Zeichen
-    static String uniPage = "http://www.uni-trier.de/index.php?id=1890";
-    static String lecture = myNamespace + "semantic_Technologies";
-    static String exercise = myNamespace + "exercise";
-    static String givenName = "Ralph";
-    static String familyName = "Bergmann";
-    static String email = "mailto:bergmann@uni-trier.de";
-    static String fullName = givenName + " " + familyName;
-
+public class App {
 
     public static void main(String[] args) {
+
+        //Namespace, Ressourcen und Literale als Strings
+        String uniPage = "http://www.uni-trier.de/index.php?id=1890";
+        String lecture = uniPage + "/semantic_Technologies";
+        String exercise = uniPage + "/exercise";
+        String email = "mailto:bergmann@uni-trier.de";
+        String name = "Ralph Bergmann";
 
         // create an empty Model
         Model model = ModelFactory.createDefaultModel();
 
         // custom Properties erstellen
-        Property createdBy = model.createProperty(myNamespace, "createdBy");
-        Property gives = model.createProperty(myNamespace, "gives");
-        Property has = model.createProperty(myNamespace, "has");
+        Property createdBy = model.createProperty(uniPage, "/createdBy");
+        Property gives = model.createProperty(uniPage, "/gives");
+        Property has = model.createProperty(uniPage, "/has");
 
+        // Blanke Ressource als Objekt erstellt
+        Resource someone = model.createResource();
 
-
-        // Resource erstellen und Property hinzufügen
-
+        //Erste Teilaufgabe
         model.createResource(uniPage)
                 .addProperty(createdBy,
-                        model.createResource()
-                                .addProperty(VCARD.FN, fullName)
+                        someone
+                                .addProperty(VCARD.FN, name)
                                 .addProperty(VCARD.EMAIL, email));
 
-        model.createResource(lecture)
-                .addProperty(gives, fullName)
-                .addProperty(has, model.createResource(exercise)
+        //Zweite Teilaufgabe
+        someone
+                .addProperty(gives, model.createResource(lecture))
+                .addProperty(has, model.createResource(exercise));
+
+        model.createResource(uniPage + "/MaximilianHoffmann")
+                .addProperty(gives, model.createResource(exercise)
                         .addProperty(has, "Assignment_1")
                         .addProperty(has, "Assignment_2")
-                        .addProperty(has, "Assignment_3")
-                        .addProperty(gives, "Maximilian Hoffmann"));
+                        .addProperty(has, "Assignment_3"));
 
 
+        //Model in RDF/XML schreiben und ausgeben
 
         // Statements im Modell auflisten
         StmtIterator iter = model.listStatements();
