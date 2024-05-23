@@ -1,17 +1,20 @@
 package org.example;
 
 import org.apache.jena.datatypes.xsd.XSDDatatype;
+import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 
 public class Airport {
-    private String name;
-    private String code;
-    private String year;
-    private boolean init;
+    private final String name;
+    private final String code;
+    private final String year;
+    private final int numberOfEmployees;
+    private final String manInCharge;
+    private Resource airport_Res;
 
-    private int numberOfEmployees;
-    private String manInCharge;
+    private final Model model = Main.getModel();
+    private final String airportNamespace = Main.getMyNamespace() + "Airport/";
 
     public Airport(String name, String code, String year, int numberOfEmployees, String manInCharge) {
         this.name = name;
@@ -21,51 +24,38 @@ public class Airport {
         this.manInCharge = manInCharge;
     }
 
+    // Initialisiert das RDF-Modell für den Flughafen
+    public void init() {
+        // Erstellung des Namensraums
+        String codeNamespace = airportNamespace + this.code + "/";
 
-    public void init(){
-        //Create NameSpace
-        String airportNamespace = Main.getMyNamespace() + this.code + "/";
-        //init Resource
-        Resource airport_Res = Main.getModel().createResource(airportNamespace);
+        // Initialisierung der Ressource
+        airport_Res = model.createResource(codeNamespace);
 
-        //init Properties
-        Property started = Main.getModel().createProperty(airportNamespace, "started");
-        Property hasEmpl = Main.getModel().createProperty(airportNamespace, "hasNumOfEmployees");
-        Property hasMan = Main.getModel().createProperty(airportNamespace, "hasManager");
-        Property name = Main.getModel().createProperty(airportNamespace, "name");
+        // Initialisierung der Eigenschaften
+        Property started = model.createProperty(codeNamespace, "started");
+        Property hasEmpl = model.createProperty(codeNamespace, "hasNumOfEmployees");
+        Property hasMan = model.createProperty(codeNamespace, "hasManager");
+        Property name = model.createProperty(codeNamespace, "name");
+        Property is = model.createProperty(codeNamespace, "is");
 
-        // Add properties with typed literals
-        airport_Res.addProperty(started, Main.getModel().createTypedLiteral(this.year, XSDDatatype.XSDgYear));
-        airport_Res.addProperty(hasEmpl, Main.getModel().createTypedLiteral(this.numberOfEmployees));
-        airport_Res.addProperty(hasMan, this.manInCharge);  // Assuming this is a string, no need for typed literal
-        airport_Res.addProperty(name, this.name);  // Assuming this is a string, no need for typed literal
-
-        /*// Connect Literals to Resource
-        airport_Res.addProperty(started, year);
-        airport_Res.addProperty(hasEmpl,""+ numberOfEmployees);
-        airport_Res.addProperty(hasMan, manInCharge);
+        // Hinzufügen der Eigenschaften mit getypten Literalen
+        airport_Res.addProperty(started, model.createTypedLiteral(this.year, XSDDatatype.XSDgYear));
+        airport_Res.addProperty(hasEmpl, model.createTypedLiteral(this.numberOfEmployees));
+        airport_Res.addProperty(hasMan, this.manInCharge);
         airport_Res.addProperty(name, this.name);
-        */
 
+        // Hinzufügen des Airports zur Airport-Klasse
+        airport_Res.addProperty(is, model.createResource(airportNamespace));
     }
 
-    public String getName() {
-        return name;
-    }
-
+    // Getter für den Flughafencode
     public String getCode() {
         return code;
     }
 
-    public String getYear() {
-        return year;
-    }
-
-    public int getNumberOfEmployees() {
-        return numberOfEmployees;
-    }
-
-    public String getManInCharge() {
-        return manInCharge;
+    // Getter für die Flughafen-Ressource
+    public Resource getAirport_Res() {
+        return airport_Res;
     }
 }

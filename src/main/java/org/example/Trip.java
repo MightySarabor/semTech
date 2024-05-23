@@ -1,68 +1,71 @@
 package org.example;
 
-import org.apache.jena.rdf.model.*;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
 
 public class Trip {
+    private final Flug[] fluege;
+    private final String tripID;
+    private final String startTime;
+    private final String endTime;
+    private final double price;
 
-    private static Flug flug;
-    private String trip;
+    private Resource trip_Res;
 
-    public Trip(String trip, Flug flug) {
-        this.trip = trip;
-        flug = flug;
+    private final Model model = Main.getModel();
+    private final String namespace = Main.getMyNamespace() + "Trip/";
+
+    public Trip(String tripID, Flug[] fluege, String startTime, String endTime, double price) {
+        this.tripID = tripID;
+        this.fluege = fluege;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.price = price;
     }
 
-    /*public static Resource setTrip(String trip, Flug flug)
-    {
+    // Initialisiert das RDF-Modell für die Trip-Ressource
+    public void init() {
+        // Erstellung von RDF-Properties
+        Property hasStartTime = model.createProperty(namespace, "hasStartTime");
+        Property hasEndTime = model.createProperty(namespace, "hasEndTime");
+        Property hasPrice = model.createProperty(namespace, "hasPrice"); // Neue Property für den Preis
+        Property is = model.createProperty(namespace, "is");
 
-        //create Literal
-        String seat = flug.getSeat();
-        String flightClass = flug.getFlightClass();
-        String startPoint = flug.getStartPoint();
-        String destinationPoint = flug.getDestinationPoint();
-        String startDate = flug.getStart_Date();
-        String startTime = flug.getStart_Time();
-        String endDate = flug.getEnd_Date();
-        String destinationTime = flug.getDestination_Time();
+        // Erstellung der Trip-Ressource
+        trip_Res = model.createResource(namespace + this.tripID);
 
+        // Hinzufügen der Startzeit
+        trip_Res.addProperty(hasStartTime, model.createTypedLiteral(this.startTime, XSDDatatype.XSDdateTime));
 
-        //create properties
-        /*Property seatProp = Main.getModel().createProperty(myNamespace, "has_Seat");
-        Property flightClassProp = Main.getModel().createProperty(myNamespace, "has_FlightClass");
-        Property startPointProp = Main.getModel().createProperty(myNamespace, "has_StartPoint");
-        Property connection = Main.getModel().createProperty(myNamespace, "connection");
-        Property destinationPointProp = Main.getModel().createProperty(myNamespace, "has_DestinationPoint");
-        Property startTimeProp = Main.getModel().createProperty(myNamespace, "has_Start_Time");
-        Property destinationTimeProp = Main.getModel().createProperty(myNamespace, "has_Destination_Time");
-        Property flightTimeProp = Main.getModel().createProperty(myNamespace, "Flight_Time");
-        Property has = Main.getModel().createProperty(myNamespace, "has");
+        // Hinzufügen der Endzeit
+        trip_Res.addProperty(hasEndTime, model.createTypedLiteral(this.endTime, XSDDatatype.XSDdateTime));
 
+        // Hinzufügen des Preises
+        trip_Res.addProperty(hasPrice, model.createTypedLiteral(this.price, XSDDatatype.XSDdecimal));
 
-        //create Resources
-        Resource flightRes = Main.getModel().createResource(myNamespace + flug.getName());
-        Resource tripRes = Main.getModel().createResource(myNamespace + trip);
+        // Hinzufügen des Trips zur Trip-Klasse
+        trip_Res.addProperty(is, model.createResource(namespace));
+    }
 
-        flightRes
-                .addProperty(seatProp, seat)
-                .addProperty(flightClassProp, flightClass)
-                .addProperty(connection, Main.getModel().createResource()
-                        .addProperty(startPointProp, startPoint)
-                        .addProperty(destinationPointProp, destinationPoint) )
+    public String getTripID() {
+        return tripID;
+    }
 
-                .addProperty(flightTimeProp, Main.getModel().createResource()
-                        .addProperty(startTimeProp, Main.getModel().createResource()
-                                .addProperty(startTimeProp, startTime)
-                                .addProperty(startTimeProp, startDate))
-                        .addProperty(destinationTimeProp, Main.getModel().createResource()
-                                .addProperty(destinationTimeProp, endDate)
-                                .addProperty(destinationTimeProp, destinationTime)));
+    public Resource getTrip_Res() {
+        return trip_Res;
+    }
 
+    // Fügt Flüge zum Trip hinzu
+    public void hasFlights(Flug[] flights) {
+        Property hasFlight = model.createProperty(namespace, "hasFlight");
 
-
-        tripRes.addProperty(has, flightRes);
-
-        return tripRes;
-
-    }*/
+        for (Flug flug : fluege) {
+            // Erstellung der Flug-Ressource und Hinzufügen zum Trip
+            Resource flightRes = model.createResource(flug.getNamespace() + flug.getFlugID());
+            trip_Res.addProperty(hasFlight, flightRes);
+        }
+    }
 
 }

@@ -5,44 +5,44 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 
 public class Customer {
-    private String firstName;
-    private String lastName;
-    private String passPort_ID;
+    private final String firstName;
+    private final String lastName;
+    private final String passportID;
 
-    public Customer(String firstName, String lastName, String passPort_ID) {
+    private Resource passport_Res;
+
+    private final Model model = Main.getModel();
+    private final String customerNamespace = Main.getMyNamespace() + "Customer/";
+
+    public Customer(String firstName, String lastName, String passportID) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.passPort_ID = passPort_ID;
+        this.passportID = passportID;
     }
 
+    // Initialisiert das RDF-Modell für den Kunden
     public void init() {
-        Model model = Main.getModel();
-        String customerNamespace = Main.getMyNamespace() + "Customer/";
-
-        // Init properties
+        // Initialisierung der Eigenschaften
+        Property hasName = model.createProperty(customerNamespace, "hasName");
         Property hasFirstName = model.createProperty(customerNamespace, "hasFirstName");
         Property hasLastName = model.createProperty(customerNamespace, "hasLastName");
         Property hasPassportID = model.createProperty(customerNamespace, "hasPassportID");
 
-        // Init resource
+        // Initialisierung der Ressourcen
         Resource customer_Res = model.createResource(customerNamespace);
+        passport_Res = model.createResource(customerNamespace + passportID);
 
-        // Add properties
-        customer_Res.addProperty(hasFirstName, this.firstName);
-        customer_Res.addProperty(hasLastName, this.lastName);
-        customer_Res.addProperty(hasPassportID, this.passPort_ID);
+        // Hinzufügen der Eigenschaften
+        passport_Res.addProperty(hasName, model.createResource()
+                .addProperty(hasFirstName, this.firstName)
+                .addProperty(hasLastName, this.lastName));
+        customer_Res.addProperty(hasPassportID, passport_Res);
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getPassportID() {
-        return passPort_ID;
+    // Buchung einer Reise durch den Kunden
+    public void booksTrip(Trip trip) {
+        Model model = Main.getModel();
+        Property booksTrip = model.createProperty(customerNamespace, "booksTrip");
+        passport_Res.addProperty(booksTrip, trip.getTrip_Res());
     }
 }
-
