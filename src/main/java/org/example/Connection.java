@@ -45,21 +45,14 @@ public class Connection {
         connections_Res.addProperty(is, model.createResource(namespace));
     }
 
-    // Verbindet zwei Flughäfen durch eine Verbindung
+    // Verbindet die Connection mit den entsprechenden Airports
     public void connects() {
         // Initialisierung der Eigenschaften
-        Property connects = model.createProperty(Main.getMyNamespace(), "connects");
-        Property hasAirport = model.createProperty(Main.getMyNamespace(), "hasAirport");
-
-        // Erstellen der Ressource für die Verbindung zwischen den Flughäfen
-        Resource connection_Res = model.createResource(namespace + airportA.getCode() + "-" + airportB.getCode());
-
-        // Hinzufügen der Verbindung zur Liste der Verbindungen der aktuellen Verbindung
-        connections_Res.addProperty(connects, connection_Res);
+        Property hasAirport = model.createProperty(namespace, "hasAirport");
 
         // Hinzufügen der Flughäfen zur Verbindung
-        connection_Res.addProperty(hasAirport, airportA.getAirport_Res());
-        connection_Res.addProperty(hasAirport, airportB.getAirport_Res());
+        connections_Res.addProperty(hasAirport, airportA.getAirport_Res());
+        connections_Res.addProperty(hasAirport, airportB.getAirport_Res());
     }
 
     public Resource getConnections_Res() {

@@ -99,13 +99,13 @@ public class Main {
         Flug.initAll(booking3Flights);
 
         // Buchungen/Trips initialisieren
-        Trip trip1 = new Trip("Trip1", booking1Flights, "2024-05-01T00:00:00", "2024-05-03T00:00:00", 500.00);
+        Trip trip1 = new Trip("Trip1", booking1Flights, "2024-05-01T00:00:00", "2024-05-03T13:00:00", 500.00);
         trip1.init();
 
-        Trip trip2 = new Trip("Trip2", booking2Flights, "2024-05-01T00:00:00", "2024-05-03T00:00:00", 700.00);
+        Trip trip2 = new Trip("Trip2", booking2Flights, "2024-05-01T00:00:00", "2024-05-03T14:30:00", 700.00);
         trip2.init();
 
-        Trip trip3 = new Trip("Trip3", booking3Flights, "2024-05-01T00:00:00", "2024-05-03T00:00:00", 600.00);
+        Trip trip3 = new Trip("Trip3", booking3Flights, "2024-05-01T00:00:00", "2024-05-03T15:30:00", 600.00);
         trip3.init();
 
         //Hier werden die unterschiedlichen Ressourcen miteinander verbunden
